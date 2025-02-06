@@ -1,6 +1,7 @@
 ﻿using Exam.exams;
 using Exam.Questions;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -62,8 +63,15 @@ namespace Exam.mainfunction
                 Console.Write("Enter Question Body: ");
                 string body = Console.ReadLine();
 
-                Console.Write("Enter Question Mark: ");
-                int marks = int.Parse(Console.ReadLine());
+
+                int marks; 
+               
+                int start;
+                do
+                {
+                    Console.Write("Enter Question Mark: ");
+
+                } while (!int.TryParse(Console.ReadLine(), out marks) );
 
                 // Ask for type of question
                 int type;
@@ -143,8 +151,13 @@ namespace Exam.mainfunction
                 else if (type == 2)
                 {
                     TrueOrFalseQuestion question = new TrueOrFalseQuestion(body, marks);
-                    Console.Write("Please Enter the right answer id (1 for True | 2 for False): ");
-                    int correctAnswerId = int.Parse(Console.ReadLine());
+                    int correctAnswerId;
+
+                    do
+                    {
+                        Console.Write("Please Enter the right answer id (1 for True | 2 for False): ");
+
+                    } while (!int.TryParse(Console.ReadLine(), out correctAnswerId) || (correctAnswerId != 1 && correctAnswerId != 2));
                     question.CorrectAnswer = new Answer(correctAnswerId, correctAnswerId == 1 ? "True" : "False");
 
                     exam.Questions.Add(question);

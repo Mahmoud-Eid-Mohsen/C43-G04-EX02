@@ -23,17 +23,24 @@ namespace Exam.exams
 
         public override void StartExam()
         {
-            Console.WriteLine("Do you want to Start Practical Exam (Y/N)?");
-            char start = char.ToUpper(Console.ReadKey().KeyChar);
-            Console.WriteLine();
+            Console.WriteLine("Do you want to Start Exam (1.for Yes| 2. for No)?");
+            int start;
+            do
+            {
 
-            if (start == 'Y')
+            } while (!int.TryParse(Console.ReadLine(), out start) || (start != 1 && start != 2));
+            if (start == 1)
             {
                 for (int i = 0; i < Questions.Count; i++)
                 {
                     Questions[i].Display();
-                    Console.Write("Please Enter The answer Id: ");
-                    int answerId = int.Parse(Console.ReadLine());
+                    int answerId;
+
+                    do
+                    {
+                        Console.Write("Please Enter The answer Id: ");
+
+                    } while (!int.TryParse(Console.ReadLine(), out answerId));
 
                     if (Questions[i].CorrectAnswer.AnswerId == answerId)
                     {
