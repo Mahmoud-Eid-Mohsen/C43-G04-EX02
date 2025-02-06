@@ -10,15 +10,46 @@ namespace Exam.exams
     {
         #region constructor
 
-        public FinalExam(DateTime examTime, int numberOfQuestions, Subject subject)
-            : base(examTime, numberOfQuestions, subject) { }
+        public FinalExam(int duration, int numberOfQuestions)
+        : base(duration, numberOfQuestions) { }
+
         #endregion
 
         #region method
         public override void ShowExam()
         {
-            Console.WriteLine("Displaying Final Exam Questions and Grades.");
-        } 
+            Console.WriteLine($"Final Exam: Duration {Duration} minutes, Questions: {NumberOfQuestions}");
+        }
+
+        public override void StartExam()
+        {
+            Console.WriteLine("Do you want to Start Exam (Y/N)?");
+            char start = char.ToUpper(Console.ReadKey().KeyChar);
+            Console.WriteLine();
+
+            if (start == 'Y')
+            {
+                for (int i = 0; i < Questions.Count; i++)
+                {
+                    Questions[i].Display();
+                    Console.Write("Please Enter The answer Id: ");
+                    int answerId = int.Parse(Console.ReadLine());
+
+                    if (Questions[i].CorrectAnswer.AnswerId == answerId)
+                    {
+                        TotalMarks += Questions[i].Marks;
+                    }
+                }
+
+                Console.WriteLine($"Your Grade is: {TotalMarks} out of {NumberOfQuestions * 3}");
+            }
+            else
+            {
+                Console.WriteLine("Exam not started.");
+            }
+        }
         #endregion
     }
 }
+  
+   

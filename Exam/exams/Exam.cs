@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Exam.Questions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,22 +10,32 @@ namespace Exam.exams
     public abstract class Exam
     {
         #region property
-        public DateTime ExamTime { get; set; }
+        public int Duration { get; set; }
         public int NumberOfQuestions { get; set; }
-        public Subject Subject { get; set; }
+        public List<Question> Questions { get; set; }
+        public int TotalMarks { get; set; }
 
         #endregion
         #region constructor
-        protected Exam(DateTime examTime, int numberOfQuestions, Subject subject)
+        protected Exam(int duration, int numberOfQuestions)
         {
-            ExamTime = examTime;
+            Duration = duration;
             NumberOfQuestions = numberOfQuestions;
-            Subject = subject;
+            Questions = new List<Question>();
+            TotalMarks = 0;
         }
         #endregion
 
         #region method
-        public abstract void ShowExam(); 
+        public abstract void ShowExam();
+        public abstract void StartExam();
         #endregion
     }
 }
+//
+
+    
+
+   
+
+
