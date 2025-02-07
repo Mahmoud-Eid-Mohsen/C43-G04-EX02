@@ -60,67 +60,26 @@ namespace Exam.mainfunction
             for (int i = 0; i < questionCount; i++)
             {
                 Console.WriteLine($"\nAdding Question {i + 1}:");
-                Console.Write("Enter Question Body: ");
-                string body = Console.ReadLine();
+                string body;
 
+                // Check for valid question body input
+                do
+                {
+                    Console.Write("Enter Question Body: ");
+                    body = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(body))
+                    {
+                        Console.WriteLine("Input cannot be empty. Please enter a valid question body.");
+                    }
+                } while (string.IsNullOrWhiteSpace(body));
 
-                int marks; 
-               
-                int start;
+                int marks;
+
+                // Check for valid marks input
                 do
                 {
                     Console.Write("Enter Question Mark: ");
-
-                } while (!int.TryParse(Console.ReadLine(), out marks) );
-
-                // Ask for type of question
-                int type;
-                do
-                {
-                    Console.WriteLine("Please Enter the Type of Question (1 for MCQ | 2 for True | False):");
-                } while (!int.TryParse(Console.ReadLine(), out type) || (type != 1 && type != 2));
-
-                if (type == 1)
-                {
-                    MCQQuestion question = new MCQQuestion(body, marks);
-                    Console.WriteLine("Enter answer choices:");
-                    question.AnswerList = new Answer[3]; // Let's say 3 choices
-
-                    for (int j = 0; j < 3; j++)
-                    {
-                        Console.Write($"Enter Answer {j + 1}: ");
-                        string answerText = Console.ReadLine();
-                        question.AnswerList[j] = new Answer(j + 1, answerText);
-                    }
-
-                    Console.Write("Please Enter the right answer id: ");
-                    int correctAnswerId = int.Parse(Console.ReadLine());
-                    question.CorrectAnswer = question.AnswerList[correctAnswerId - 1]; // Set correct answer
-
-                    exam.Questions.Add(question);
-                }
-                else if (type == 2)
-                {
-                    TrueOrFalseQuestion question = new TrueOrFalseQuestion(body, marks);
-                    Console.Write("Please Enter the right answer id (1 for True | 2 for False): ");
-                    int correctAnswerId = int.Parse(Console.ReadLine());
-                    question.CorrectAnswer = new Answer(correctAnswerId, correctAnswerId == 1 ? "True" : "False");
-
-                    exam.Questions.Add(question);
-                }
-            }
-        }
-
-        private static void AddQuestionsToPracticalExam(PracticalExam exam, int questionCount)
-        {
-            for (int i = 0; i < questionCount; i++)
-            {
-                Console.WriteLine($"\nAdding Practical Question {i + 1}:");
-                Console.Write("Enter Question Body: ");
-                string body = Console.ReadLine();
-
-                Console.Write("Enter Question Mark: ");
-                int marks = int.Parse(Console.ReadLine());
+                } while (!int.TryParse(Console.ReadLine(), out marks));
 
                 // Ask for type of question
                 int type;
@@ -132,18 +91,32 @@ namespace Exam.mainfunction
                 if (type == 1)
                 {
                     MCQQuestion question = new MCQQuestion(body, marks);
-                    Console.WriteLine("Enter answer choices:");
                     question.AnswerList = new Answer[3]; // Let's say 3 choices
 
                     for (int j = 0; j < 3; j++)
                     {
-                        Console.Write($"Enter Answer {j + 1}: ");
-                        string answerText = Console.ReadLine();
+                        string answerText;
+                        do
+                        {
+                            Console.Write($"Enter Answer {j + 1}: ");
+                            answerText = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(answerText))
+                            {
+                                Console.WriteLine("Input cannot be empty. Please enter a valid answer.");
+                            }
+                        } while (string.IsNullOrWhiteSpace(answerText));
+
                         question.AnswerList[j] = new Answer(j + 1, answerText);
                     }
 
-                    Console.Write("Please Enter the right answer id: ");
-                    int correctAnswerId = int.Parse(Console.ReadLine());
+                    int correctAnswerId;
+                    do
+                    {
+                        Console.Write("Please Enter the right answer id (1-3): ");
+                    } while (!int.TryParse(Console.ReadLine(), out correctAnswerId) || correctAnswerId < 1 || correctAnswerId > 3); // Ensure within range
+
+                    // Print correctAnswerId to debug
+                    Console.WriteLine($"Correct Answer ID: {correctAnswerId}");
                     question.CorrectAnswer = question.AnswerList[correctAnswerId - 1]; // Set correct answer
 
                     exam.Questions.Add(question);
@@ -156,12 +129,103 @@ namespace Exam.mainfunction
                     do
                     {
                         Console.Write("Please Enter the right answer id (1 for True | 2 for False): ");
-
                     } while (!int.TryParse(Console.ReadLine(), out correctAnswerId) || (correctAnswerId != 1 && correctAnswerId != 2));
+
+                    // Print correctAnswerId to debug
+                    Console.WriteLine($"Correct Answer ID: {correctAnswerId}");
                     question.CorrectAnswer = new Answer(correctAnswerId, correctAnswerId == 1 ? "True" : "False");
 
                     exam.Questions.Add(question);
                 }
+
+                Console.WriteLine("Question added successfully!");
+            }
+        }
+
+        private static void AddQuestionsToPracticalExam(PracticalExam exam, int questionCount)
+        {
+            for (int i = 0; i < questionCount; i++)
+            {
+                Console.WriteLine($"\nAdding Practical Question {i + 1}:");
+                string body;
+
+                // Check for valid question body input
+                do
+                {
+                    Console.Write("Enter Question Body: ");
+                    body = Console.ReadLine();
+                    if (string.IsNullOrWhiteSpace(body))
+                    {
+                        Console.WriteLine("Input cannot be empty. Please enter a valid question body.");
+                    }
+                } while (string.IsNullOrWhiteSpace(body));
+
+                int marks;
+
+                // Check for valid marks input
+                do
+                {
+                    Console.Write("Enter Question Mark: ");
+                } while (!int.TryParse(Console.ReadLine(), out marks));
+
+                // Ask for type of question
+                int type;
+                do
+                {
+                    Console.WriteLine("Please Enter the Type of Question (1 for MCQ | 2 for True | False):");
+                } while (!int.TryParse(Console.ReadLine(), out type) || (type != 1 && type != 2));
+
+                if (type == 1)
+                {
+                    MCQQuestion question = new MCQQuestion(body, marks);
+                    question.AnswerList = new Answer[3]; // Let's say 3 choices
+
+                    for (int j = 0; j < 3; j++)
+                    {
+                        string answerText;
+                        do
+                        {
+                            Console.Write($"Enter Answer {j + 1}: ");
+                            answerText = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(answerText))
+                            {
+                                Console.WriteLine("Input cannot be empty. Please enter a valid answer.");
+                            }
+                        } while (string.IsNullOrWhiteSpace(answerText));
+
+                        question.AnswerList[j] = new Answer(j + 1, answerText);
+                    }
+
+                    int correctAnswerId;
+                    do
+                    {
+                        Console.Write("Please Enter the right answer id (1-3): ");
+                    } while (!int.TryParse(Console.ReadLine(), out correctAnswerId) || correctAnswerId < 1 || correctAnswerId > 3); // Ensure within range
+
+                    // Print correctAnswerId to debug
+                    Console.WriteLine($"Correct Answer ID: {correctAnswerId}");
+                    question.CorrectAnswer = question.AnswerList[correctAnswerId - 1]; // Set correct answer
+
+                    exam.Questions.Add(question);
+                }
+                else if (type == 2)
+                {
+                    TrueOrFalseQuestion question = new TrueOrFalseQuestion(body, marks);
+                    int correctAnswerId;
+
+                    do
+                    {
+                        Console.Write("Please Enter the right answer id (1 for True | 2 for False): ");
+                    } while (!int.TryParse(Console.ReadLine(), out correctAnswerId) || (correctAnswerId != 1 && correctAnswerId != 2));
+
+                    // Print correctAnswerId to debug
+                    Console.WriteLine($"Correct Answer ID: {correctAnswerId}");
+                    question.CorrectAnswer = new Answer(correctAnswerId, correctAnswerId == 1 ? "True" : "False");
+
+                    exam.Questions.Add(question);
+                }
+
+                Console.WriteLine("Practical Question added successfully!");
             }
         }
     }
